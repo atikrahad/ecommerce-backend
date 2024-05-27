@@ -1,17 +1,19 @@
 import { z } from "zod";
 
+//==========variants input validation with zod============
 const variantInputValidationSchema = z.object({
     type: z.string().min(1),
     value: z.string().min(1)
 });
 
-
+//==========inventory input validation with zod============
 const inventoryInputValidationSchema = z.object({
     quantity: z.number().min(0, {message:"Quantity number is required"}),
     inStock: z.boolean()
 });
 
 
+//==========products input validation with zod============
 const productInputValidationSchema = z.object({
     name: z.string().min(1,{message: "Product name minimum 1 character"}),
     description: z.string().min(1,{message: "Description name minimum 1 character"}),

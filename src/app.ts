@@ -6,6 +6,7 @@ const app: Application = express()
 app.use(cors())
 app.use(express.json())
 
+//==========Api endpoind============
 app.use("/api/products", productRoute)
 
 app.get("/", (req: Request, res: Response) => {
