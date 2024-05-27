@@ -21,7 +21,8 @@ const productInputValidationSchema = z.object({
     category: z.string().min(1,{message: "Category name minimum 1 character"}),
     tags: z.array(z.string().min(1, {message: "Tags name minimum 1 character"})).min(1,{message:"Tags array must contain at least 1 (string)element"}),
     variants: z.array(variantInputValidationSchema).min(1, {message: "Variants array must have product variant object"}),
-    inventory: inventoryInputValidationSchema
+    inventory: inventoryInputValidationSchema,
+    isDeleted :z.boolean().optional()
 });
 
 export default productInputValidationSchema

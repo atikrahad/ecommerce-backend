@@ -59,9 +59,27 @@ const getSingleProduct = async (req: Request, res: Response) => {
     }
 }
 
+//===========Delete a single Product update controlar with error handle===============
+const deleteAProduct = async (req: Request, res: Response) => {
+    try {
+        const id: string = req.params.productId
+        await productServices.deleteProduct(id)
+        res.status(200).json({
+            success: true,
+            message: "Product deleted successfully!",
+            data: null
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.issues[0].message || "Something went wrong to create product",
+        })
+    }
+}
 
 export const productControlar = {
     createProduct,
     getProductsAllData,
-    getSingleProduct
+    getSingleProduct,
+    deleteAProduct
 }

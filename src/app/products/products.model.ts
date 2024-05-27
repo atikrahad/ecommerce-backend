@@ -26,7 +26,7 @@ const inventorySchema = new Schema<TInventory>({
     inStock: {
         type: Boolean,
         required: true
-    }
+    },
 })
 
 
@@ -35,7 +35,7 @@ const inventorySchema = new Schema<TInventory>({
 const productSchema = new Schema<TProduct>({
     name: {
         type: String,
-        trim:true,
+        trim: true,
         required: true
     },
     description: {
@@ -61,6 +61,10 @@ const productSchema = new Schema<TProduct>({
     inventory: {
         type: inventorySchema,
         required: true
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 })
 
