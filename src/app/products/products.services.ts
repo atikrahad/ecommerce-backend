@@ -9,13 +9,19 @@ const productCreate = async (productData: TProduct) => {
 }
 
 //===========All products get services with mongoose query===============
-const getProductsData = async ()=>{
+const getProductsData = async () => {
     const result = await product.find()
     return result
 }
 
+//===========All products get services with mongoose query===============
+const singleproduct = async (id: string) => {
+    const result = product.findById(id)
+    return result
+}
 
 export const productServices = {
     productCreate,
-    getProductsData
+    getProductsData,
+    singleproduct
 }

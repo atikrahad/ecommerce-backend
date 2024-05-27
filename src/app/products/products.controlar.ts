@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { productServices } from "./products.services";
 import productInputValidationSchema from "./products.inputvalidate";
+import { z } from "zod";
 
 //===========Product post controlar with error handle===============
 const createProduct = async (req: Request, res: Response) => {
@@ -39,7 +40,28 @@ const getProductsAllData = async (req: Request, res: Response) => {
     }
 }
 
+//===========single Products get controlar with error handle===============
+const getSingleProduct = async (req: Request, res: Response) => {
+    try {
+        const id: string = req.params.productId
+
+        const result = await productServices.singleproduct(id)
+        res.status(200).json({
+            success: true,
+            message: "Product fetched successfully!",
+            data: result
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            success: false,
+            message: err.issues[0].message || "Something went wrong to create product",
+        })
+    }
+}
+
+
 export const productControlar = {
     createProduct,
-    getProductsAllData
+    getProductsAllData,
+    getSingleProduct
 }

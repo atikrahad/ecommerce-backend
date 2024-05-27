@@ -5,6 +5,7 @@ const router = express.Router()
 //============== Products api routes ==============
 router.post("/", productControlar.createProduct)
 router.get("/", productControlar.getProductsAllData)
+router.get("/:productId", productControlar.getSingleProduct)
 
 
 export const productRoute = router
