@@ -9,13 +9,27 @@ const productCreate = async (productData: TProduct) => {
 }
 
 //===========All products get services with mongoose query===============
-const getProductsData = async () => {
-    const result = await product.find({ isDeleted: { $ne: true } })
-    return result
+const getProductsData = async (query: string) => {
+    if (query) {
+        const result = await product.find({
+            isDeleted: { $ne: true },
+            $or: [
+                { name: { $regex: query, $options: "i" } },
+                { description: { $regex: query, $options: "i" } },
+            ],
+        })
+        return result
+    } else {
+        const result = await product.find({
+            isDeleted: { $ne: true }
+        })
+        return result
+
+    }
 }
 
 //===========All products get services with mongoose query===============
-const singleproduct = async (id: string) => {
+const singleproduct = async (id: string | undefined) => {
     const result = product.findOne({ _id: id, isDeleted: { $ne: true } })
     return result
 }
@@ -36,9 +50,19 @@ const deleteProduct = async (id: string) => {
     return result
 }
 
+//============Update a product services with mongoose query==============
+const updateProuct = async (id: string, updateData: TProduct) => {
+    const result = await product.findByIdAndUpdate(
+        { _id: id },
+        updateData,
+        { new: true }
+    )
+    return result
+}
 export const productServices = {
     productCreate,
     getProductsData,
     singleproduct,
-    deleteProduct
+    deleteProduct,
+    updateProuct
 }
