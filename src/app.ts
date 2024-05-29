@@ -10,6 +10,12 @@ app.use(express.json())
 //==========Api endpoind============
 app.use("/api/products", productRoute)
 app.use("/api/orders", orderRoute)
+app.all("*", (req:Request, res:Response)=>{
+    res.status(500).json({
+        success:false,
+        message: "Route not found"
+    })
+})
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Products server is running")

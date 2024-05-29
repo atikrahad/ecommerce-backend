@@ -10,7 +10,7 @@ const createOrderservices = async (orderData: TOrder) => {
     const newQuantity = productQuantity - orderData.quantity
 
     //==========update product inventory==========
-    if (newQuantity <= 0) {
+    if (newQuantity == 0) {
         await product.findOneAndUpdate(
             { _id: orderData.productId },
             {
@@ -23,7 +23,12 @@ const createOrderservices = async (orderData: TOrder) => {
                 new: true
             }
         )
-    } else {
+        //========== create a order ============
+        const result = await order.create(orderData)
+
+        return result
+    }
+    else if (newQuantity > 0) {
         await product.findOneAndUpdate(
             { _id: orderData.productId },
             {
@@ -35,25 +40,35 @@ const createOrderservices = async (orderData: TOrder) => {
                 new: true
             }
         )
+        //========== create a order ============
+        const result = await order.create(orderData)
+
+        return result
+    } else {
+        throw new Error("Insufficient quantity available in inventory")
     }
 
-    //========== create a order ============
-    const result = await order.create(orderData)
-
-    return result
 }
 
 
 //============Get all orders services with mongoose query==============
-const allOrder = async (email: any) => {
+const allOrder = async (email:string|undefined) => {
     if (email) {
         const result = await order.find({ email: email })
+        
+        if (result.length === 0) {
+            throw new Error("Order not found")
+        }
         return result
 
     } else {
         const result = await order.find()
+        if (result.length === 0) {
+            throw new Error("Order not found")
+        }
         return result
     }
+
 }
 
 
