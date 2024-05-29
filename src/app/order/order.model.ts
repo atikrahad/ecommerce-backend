@@ -20,5 +20,6 @@ const orderSchema = new Schema<TOrder>({
     }
 })
 
+
 const order = model<TOrder>("order", orderSchema)
 export default order
