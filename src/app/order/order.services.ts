@@ -9,6 +9,7 @@ const createOrderservices = async (orderData: TOrder) => {
     const productQuantity: any = productData?.inventory.quantity
     const newQuantity = productQuantity - orderData.quantity
 
+    //==========update product inventory==========
     if (newQuantity <= 0) {
         await product.findOneAndUpdate(
             { _id: orderData.productId },
@@ -36,18 +37,25 @@ const createOrderservices = async (orderData: TOrder) => {
         )
     }
 
-
+    //========== create a order ============
     const result = await order.create(orderData)
 
     return result
 }
 
 
-//============Get all order services with mongoose query==============
-const allOrder = async ()=>{
-    const result = await order.find()
-    return result
+//============Get all orders services with mongoose query==============
+const allOrder = async (email: any) => {
+    if (email) {
+        const result = await order.find({ email: email })
+        return result
+
+    } else {
+        const result = await order.find()
+        return result
+    }
 }
+
 
 export const orderServices = {
     createOrderservices,

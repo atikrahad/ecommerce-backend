@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { orderInputValidate } from "./order.validate";
 import { orderServices } from "./order.services";
+import { z } from "zod";
 
 //===========Order post controlar with error handle===============
 const createOrder = async (req: Request, res: Response) => {
@@ -24,21 +25,36 @@ const createOrder = async (req: Request, res: Response) => {
 //===========All order get controlar with error handle===============
 const getAllOrders = async (req: Request, res: Response) => {
     try {
-        const result = await orderServices.allOrder()
-        res.status(200).json({
-            success: true,
-            message: "Orders fetched successfully!",
-            data: result
-        })
-    } catch (err) {
+        const email = req.query.email
+        if (email) {
+
+            const validateEmail = z.string().email({ message: "Email type is not valid" })
+            const validemail = validateEmail.parse(email)
+            const result = await orderServices.allOrder(validemail)
+            res.status(200).json({
+                success: true,
+                message: "Orders fetched successfully!",
+                data: result
+            })
+        }
+        else {
+            const result = await orderServices.allOrder(email)
+            res.status(200).json({
+                success: true,
+                message: "Orders fetched successfully!",
+                data: result
+            })
+        }
+
+    } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: "Something went wrong to fetched orders!",
+            message: err.issues[0].message || "Something went wrong to fetched orders!",
         })
     }
 }
 
 export const orderControlars = {
     createOrder,
-    getAllOrders
+    getAllOrders,
 }
